@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C e:\\\\app remote -v)",
+      "Bash(rm -rf src/ public/ prisma/ node_modules/ .next/)",
+      "Bash(rm -f *.ts *.mjs *.json README.md *.d.ts AGENTS.md CLAUDE.md postcss.config.mjs prisma.config.ts .env .env.local next-env.d.ts)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

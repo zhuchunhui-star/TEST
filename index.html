@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✦ 小宇宙</title>
+  <meta name="description" content="个人主页 — 记录生活的小角落" />
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #faf5ff;
+      --card: rgba(255,255,255,0.75);
+      --card-border: rgba(255,255,255,0.5);
+      --text: #3b2f4a;
+      --text-secondary: #7c6a8a;
+      --accent: #a78bfa;
+      --accent-hover: #8b6fd6;
+      --shadow: 0 8px 32px rgba(167,139,250,0.12);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="dark"] {
+      --bg: #1a1625;
+      --card: rgba(40,30,55,0.85);
+      --card-border: rgba(167,139,250,0.2);
+      --text: #e8e0f0;
+      --text-secondary: #a892be;
+      --accent: #c4abfa;
+      --accent-hover: #a78bfa;
+      --shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    /* ===== Animated Background ===== */
+    .bg-animation {
+      position: fixed; inset: 0; z-index: -1;
+      overflow: hidden;
+    }
+    .bg-animation .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+    .bg-animation .orb:nth-child(1) {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #a78bfa, #7c3aed);
+      top: -15%; left: -10%;
+      animation-delay: 0s;
+    }
+    .bg-animation .orb:nth-child(2) {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #f9a8d4, #ec4899);
+      bottom: -10%; right: -8%;
+      animation-delay: -7s;
+    }
+    .bg-animation .orb:nth-child(3) {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #6ee7b7, #10b981);
+      top: 40%; left: 50%;
+      transform: translateX(-50%);
+      animation-delay: -14s;
+    }
+    .bg-animation .orb:nth-child(4) {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, #fbbf24, #f59e0b);
+      top: 10%; right: 20%;
+      animation-delay: -3s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -40px) scale(1.1); }
+      50% { transform: translate(-20px, 20px) scale(0.9); }
+      75% { transform: translate(40px, 30px) scale(1.05); }
+    }
+
+    /* ===== Container ===== */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ===== Header ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .greeting-area h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.3;
+      background: linear-gradient(135deg, var(--accent), #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .greeting-area .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .greeting-area .clock {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== Theme Toggle ===== */
+    .theme-toggle {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.3rem;
+      backdrop-filter: blur(12px);
+      transition: all var(--transition);
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 32px rgba(167,139,250,0.25);
+    }
+
+    /* ===== Card ===== */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+      margin-bottom: 20px;
+    }
+    .card:hover {
+      box-shadow: 0 12px 40px rgba(167,139,250,0.18);
+      transform: translateY(-2px);
+    }
+    .card-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .icon { font-size: 1rem; }
+
+    /* ===== Quote ===== */
+    .quote-text {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      font-style: italic;
+      color: var(--text);
+    }
+    .quote-text::before { content: "「"; opacity: 0.5; }
+    .quote-text::after  { content: "」"; opacity: 0.5; }
+    .quote-author {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-align: right;
+    }
+    .quote-refresh {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 12px;
+      background: none;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .quote-refresh:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* ===== Links Grid ===== */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .link-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 12px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text);
+      transition: all var(--transition);
+      border: 1px solid transparent;
+    }
+    .link-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(167,139,250,0.15);
+    }
+    .link-card .emoji {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+    .link-card .label {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    /* ===== Todo ===== */
+    .todo-input-wrap {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .todo-input-wrap input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border var(--transition);
+    }
+    .todo-input-wrap input:focus {
+      border-color: var(--accent);
+    }
+    .todo-input-wrap button {
+      padding: 10px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition);
+      white-space: nowrap;
+    }
+    .todo-input-wrap button:hover { background: var(--accent-hover); }
+
+    .todo-list { list-style: none; }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .todo-item:last-child { border-bottom: none; }
+    .todo-item input[type="checkbox"] {
+      appearance: none;
+      width: 20px; height: 20px;
+      border: 2px solid var(--text-secondary);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all var(--transition);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .todo-item input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .todo-item input[type="checkbox"]:checked::after {
+      content: "✓";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    .todo-item .todo-text {
+      flex: 1;
+      font-size: 0.92rem;
+      transition: all var(--transition);
+    }
+    .todo-item .todo-text.done {
+      text-decoration: line-through;
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+    .todo-item .todo-delete {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+      border-radius: 50%;
+      transition: all var(--transition);
+      line-height: 1;
+    }
+    .todo-item .todo-delete:hover {
+      color: #ef4444;
+      background: rgba(239,68,68,0.1);
+    }
+    .todo-empty {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .todo-count {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 12px;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-secondary); border-radius: 3px; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 480px) {
+      .container { padding: 24px 16px 60px; }
+      .greeting-area h1 { font-size: 1.5rem; }
+      .links-grid { grid-template-columns: repeat(2, 1fr); }
+      .card { padding: 20px; }
+      .todo-input-wrap { flex-direction: column; }
+      .todo-input-wrap button { width: 100%; }
+    }
+
+    /* ===== Entrance Animations ===== */
+    .card { animation: fadeUp 0.6s ease both; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
+    .card:nth-child(4) { animation-delay: 0.3s; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="greeting-area">
+        <h1 id="greeting">✨ 你好</h1>
+        <div class="subtitle">今天也要开心呀</div>
+        <div class="clock" id="clock"></div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+    </header>
+
+    <!-- Quote Card -->
+    <div class="card">
+      <div class="card-title"><span class="icon">💭</span> 今日一言</div>
+      <div class="quote-text" id="quoteText">生活不是为了赶路，而是为了感受路。</div>
+      <div class="quote-author" id="quoteAuthor">— 未知</div>
+      <button class="quote-refresh" id="quoteRefresh">⟳ 换一句</button>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🔗</span> 快捷导航</div>
+      <div class="links-grid" id="linksGrid">
+        <a class="link-card" href="https://github.com" target="_blank" rel="noopener">
+          <span class="emoji">🐙</span>
+          <span class="label">GitHub</span>
+        </a>
+        <a class="link-card" href="https://developer.mozilla.org" target="_blank" rel="noopener">
+          <span class="emoji">📖</span>
+          <span class="label">MDN</span>
+        </a>
+        <a class="link-card" href="https://stackoverflow.com" target="_blank" rel="noopener">
+          <span class="emoji">💬</span>
+          <span class="label">Stack Overflow</span>
+        </a>
+        <a class="link-card" href="https://news.ycombinator.com" target="_blank" rel="noopener">
+          <span class="emoji">📰</span>
+          <span class="label">Hacker News</span>
+        </a>
+        <a class="link-card" href="https://vercel.com" target="_blank" rel="noopener">
+          <span class="emoji">▲</span>
+          <span class="label">Vercel</span>
+        </a>
+        <a class="link-card" href="https://www.wikipedia.org" target="_blank" rel="noopener">
+          <span class="emoji">🌐</span>
+          <span class="label">Wikipedia</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Todo Card -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📝</span> 小笔记</div>
+      <div class="todo-input-wrap">
+        <input type="text" id="todoInput" placeholder="写点什么…" />
+        <button id="todoAdd">+ 添加</button>
+      </div>
+      <ul class="todo-list" id="todoList"></ul>
+      <div class="todo-count" id="todoCount"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>✦ 小宇宙 &mdash; 用 ✨ 点亮每一天</p>
+      <p style="margin-top:4px;"><a href="https://github.com/zhuchunhui-star/TEST" target="_blank" rel="noopener">GitHub</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // ===== Quotes =====
+    const QUOTES = [
+      { text: '生活不是为了赶路，而是为了感受路。', author: '未知' },
+      { text: '世界上只有一种真正的英雄主义，那就是在认清生活真相之后依然热爱生活。', author: '罗曼·罗兰' },
+      { text: '山不见我，我自去见山。', author: '未知' },
+      { text: '慢慢来，比较快。', author: '蒋勋' },
+      { text: '种一棵树最好的时间是十年前，其次是现在。', author: 'Dambisa Moyo' },
+      { text: 'Stay hungry, stay foolish.', author: 'Steve Jobs' },
+      { text: '道阻且长，行则将至。', author: '《荀子·修身》' },
+      { text: '凡是过往，皆为序章。', author: 'William Shakespeare' },
+      { text: '心之所向，素履以往。', author: '未知' },
+      { text: '人生如逆旅，我亦是行人。', author: '苏轼' },
+      { text: 'The best time to plant a tree was 20 years ago. The second best time is now.', author: 'Chinese Proverb' },
+      { text: '少即是多。', author: 'Ludwig Mies van der Rohe' },
+      { text: '保持简单，保持愚蠢。', author: 'Albert Einstein' },
+      { text: '千里之行，始于足下。', author: '老子' },
+      { text: '仰望星空，脚踏实地。', author: '未知' },
+    ];
+
+    // ===== State =====
+    const STORAGE_KEYS = { theme: 'mini-theme', todos: 'mini-todos' };
+
+    // ===== DOM =====
+    const greetingEl = document.getElementById('greeting');
+    const clockEl = document.getElementById('clock');
+    const themeToggle = document.getElementById('themeToggle');
+    const quoteText = document.getElementById('quoteText');
+    const quoteAuthor = document.getElementById('quoteAuthor');
+    const quoteRefresh = document.getElementById('quoteRefresh');
+    const todoInput = document.getElementById('todoInput');
+    const todoAdd = document.getElementById('todoAdd');
+    const todoList = document.getElementById('todoList');
+    const todoCount = document.getElementById('todoCount');
+
+    // ===== Greeting & Clock =====
+    function updateGreeting() {
+      const h = new Date().getHours();
+      let g = '✨ 晚上好';
+      if (h < 6) g = '🌙 夜深了';
+      else if (h < 9) g = '🌅 早上好';
+      else if (h < 12) g = '☀️ 上午好';
+      else if (h < 14) g = '🌤️ 中午好';
+      else if (h < 18) g = '🌻 下午好';
+      greetingEl.textContent = g;
+    }
+
+    function updateClock() {
+      const now = new Date();
+      clockEl.textContent = now.toLocaleDateString('zh-CN', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        weekday: 'long'
+      }) + ' · ' + now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    setInterval(updateClock, 1000);
+
+    // ===== Theme =====
+    function getTheme() { return localStorage.getItem(STORAGE_KEYS.theme) || 'light'; }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem(STORAGE_KEYS.theme, theme);
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+
+    // ===== Quotes =====
+    let currentQuoteIdx = -1;
+
+    function showRandomQuote() {
+      let idx;
+      do { idx = Math.floor(Math.random() * QUOTES.length); }
+      while (idx === currentQuoteIdx && QUOTES.length > 1);
+      currentQuoteIdx = idx;
+      const q = QUOTES[idx];
+      quoteText.textContent = q.text;
+      quoteAuthor.textContent = `— ${q.author}`;
+    }
+
+    // Daily quote (deterministic by date)
+    function showDailyQuote() {
+      const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+      currentQuoteIdx = dayOfYear % QUOTES.length;
+      const q = QUOTES[currentQuoteIdx];
+      quoteText.textContent = q.text;
+      quoteAuthor.textContent = `— ${q.author}`;
+    }
+
+    quoteRefresh.addEventListener('click', showRandomQuote);
+
+    // ===== Todos =====
+    let todos = [];
+
+    function loadTodos() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.todos);
+        todos = raw ? JSON.parse(raw) : [];
+      } catch { todos = []; }
+    }
+
+    function saveTodos() {
+      localStorage.setItem(STORAGE_KEYS.todos, JSON.stringify(todos));
+    }
+
+    function renderTodos() {
+      if (todos.length === 0) {
+        todoList.innerHTML = '<li class="todo-empty">✨ 还没有笔记，写点什么吧</li>';
+        todoCount.textContent = '';
+        return;
+      }
+      const done = todos.filter(t => t.done).length;
+      todoList.innerHTML = todos.map((t, i) => `
+        <li class="todo-item" data-index="${i}">
+          <input type="checkbox" ${t.done ? 'checked' : ''} />
+          <span class="todo-text ${t.done ? 'done' : ''}">${escapeHtml(t.text)}</span>
+          <button class="todo-delete" title="删除">✕</button>
+        </li>
+      `).join('');
+      todoCount.textContent = `📌 ${done}/${todos.length} 已完成`;
+    }
+
+    function escapeHtml(text) {
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    function addTodo() {
+      const text = todoInput.value.trim();
+      if (!text) return;
+      todos.push({ text, done: false, createdAt: Date.now() });
+      saveTodos();
+      renderTodos();
+      todoInput.value = '';
+      todoInput.focus();
+    }
+
+    function toggleTodo(index) {
+      todos[index].done = !todos[index].done;
+      saveTodos();
+      renderTodos();
+    }
+
+    function deleteTodo(index) {
+      todos.splice(index, 1);
+      saveTodos();
+      renderTodos();
+    }
+
+    todoAdd.addEventListener('click', addTodo);
+    todoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addTodo(); });
+
+    todoList.addEventListener('click', (e) => {
+      const li = e.target.closest('.todo-item');
+      if (!li) return;
+      const idx = parseInt(li.dataset.index);
+      if (e.target.type === 'checkbox') toggleTodo(idx);
+      if (e.target.classList.contains('todo-delete')) deleteTodo(idx);
+    });
+
+    // ===== Init =====
+    function init() {
+      updateGreeting();
+      updateClock();
+      setTheme(getTheme());
+      showDailyQuote();
+      loadTodos();
+      renderTodos();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
